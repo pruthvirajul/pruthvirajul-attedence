@@ -8,9 +8,9 @@ const port = 3001;
 // PostgreSQL connection
 const pool = new Pool({
     user: 'postgres',
-    host: 'localhost',
+    host: 'postgres',
     database: 'attendance_db',
-    password: 'root',
+    password: 'admin321',
     port: 5432,
 });
 
@@ -278,5 +278,5 @@ app.get('/api/export', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://51.21.182.36:${port}`);
 });
