@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin234
+      POSTGRES_DB: attendance_db
+    ports:
+      - "5001:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: backend-service
+    depends_on:
+      - postgres
+    ports:
+      - "3072:3072"
+    environment:
+      DATABASE_URL: postgres://postgres:admin234@postgres:5432/attendance_db
+
+  employee_attendance:
+    build:
+      context: ./Employee-Attendance
+      dockerfile: Dockerfile
+    container_name: employee-attendance-service
+    ports:
+      - "6001:80"
+    depends_on:
+      - backend
+
+  hr_attendance:
+    build:
+      context: ./HR-Attendance
+      dockerfile: Dockerfile
+    container_name: hr-attendance-service
+    ports:
+      - "6002:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
